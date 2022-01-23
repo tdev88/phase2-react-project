@@ -3,10 +3,12 @@ import Header from "./components/Header";
 import Guests from "./components/Guests";
 import AddGuest from "./components/AddGuest";
 
-
 import { useState } from "react";
 
 function App() {
+  //Add Button State
+  const [showAddGuestButton, setShowAddGuestButton] = useState(false);
+  //Guests State
   const [guests, setGuests] = useState([
     {
       id: 1,
@@ -29,9 +31,11 @@ function App() {
 
   //Add Guest
   const addGuest = (guest) => {
-    console.log(guest)
-  }
- 
+    const id = Math.floor(Math.random() * 10000) + 1;
+    const newGuest = { id, ...guest };
+    setGuests([...guests, newGuest]);
+  };
+
   //Delete Guest
   const deleteGuest = (id) => {
     setGuests(guests.filter((guest) => guest.id !== id));
@@ -49,8 +53,12 @@ function App() {
   //Render page
   return (
     <div className="container">
-      <Header title="Guest List" />
-      <AddGuest onAdd={addGuest} />
+      <Header
+        title="Guest List"
+        onAdd={() => setShowAddGuestButton(!showAddGuestButton)}
+        showAddButton={showAddGuestButton}
+      />
+      {showAddGuestButton && <AddGuest onAdd={addGuest} />}
       {guests.length > 0 ? (
         <Guests
           guests={guests}
