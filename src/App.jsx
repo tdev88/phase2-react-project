@@ -3,41 +3,51 @@ import Header from "./components/Header";
 import Guests from "./components/Guests";
 import AddGuest from "./components/AddGuest";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function App() {
+  
+//useState
   //Add Button State
   const [showAddGuestButton, setShowAddGuestButton] = useState(false);
   //Guests State
-  const [guests, setGuests] = useState([
-    {
-      id: 1,
-      name: "Victoria",
-      attending: true,
-    },
+  const [guests, setGuests] = useState([]);
 
-    {
-      id: 2,
-      name: "Tracy",
-      attending: true,
-    },
-
-    {
-      id: 3,
-      name: "Stephen",
-      attending: true,
-    },
-  ]);
+//useEffect (get data from db.json)
+  useEffect(() => {
+    const fetchGuests = async () => {
+      const response = await fetch('http://localhost:5000/guests')
+      const data = await response.json()
+      setGuests(data)
+    }
+    
+    fetchGuests()
+  }, [])
 
   //Add Guest
-  const addGuest = (guest) => {
-    const id = Math.floor(Math.random() * 10000) + 1;
-    const newGuest = { id, ...guest };
-    setGuests([...guests, newGuest]);
+  const addGuest = async (guest) => {
+    const response = await fetch(`http://localhost:5000/guests`, {
+      method: `POST`,
+      headers: {
+        'Content-type': 'application/json'},
+        body: JSON.stringify(guest)
+    })
+
+    const data = await response.json()
+
+    setGuests([...guests, data])
+
+    // const id = Math.floor(Math.random() * 10000) + 1;
+    // const newGuest = { id, ...guest };
+    // setGuests([...guests, newGuest]);
   };
 
   //Delete Guest
-  const deleteGuest = (id) => {
+  const deleteGuest = async (id) => {
+    await fetch(`http://localhost:5000/guests${id}`, {
+      method: `DELETE`,
+    })
+
     setGuests(guests.filter((guest) => guest.id !== id));
   };
 

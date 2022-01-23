@@ -1,0 +1,24 @@
+{
+  "guests": [
+    {
+      "id": 1,
+      "name": "Victoria",
+      "attending": true
+    },
+    {
+      "id": 2,
+      "name": "Tracy",
+      "attending": true
+    },
+    {
+      "id": 3,
+      "name": "Stephen",
+      "attending": true
+    },
+    {
+      "name": "Pierre",
+      "attending": false,
+      "id": 4
+    }
+  ]
+}
